@@ -14,10 +14,6 @@
 ;; Ignore bell sounds.
 (setq ring-bell-function #'ignore)
 
-;; Auto-revert dired (the directory editor) when revisiting
-;; directories, since they may have changed underneath.
-(setq dired-auto-revert-buffer t)
-
 ;; Scroll Eshell to the bottom when new output is added.
 (setq eshell-scroll-to-bottom-on-input 'this)
 
@@ -106,3 +102,83 @@
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; Emacs ships with several completion engines, but none are as
+;; flexible as Vertico.  This is the secret sauce that powers the
+;; Emacs "Command Palette", enabling tab-completion when using "M-x
+;; command", `project-find-file', and other minibuffer commands.
+(use-package vertico
+  :ensure t
+  :hook (after-init . vertico-mode))
+
+;; Marginalia adds, well, marginalia to the Emacs minibuffer,
+;; extending Vertico with a ton of rich information.
+(use-package marginalia
+  :ensure t
+  :hook (after-init . marginalia-mode))
+
+;; Persist minibuffer history over Emacs restarts.  Vertico uses this
+;; to sort based on history.
+(use-package savehist
+  :ensure nil ; it is built-in
+  :hook (after-init . savehist-mode))
+
+;; Where Vertico is a completion engine for your Emacs minibuffer,
+;; Corfu is a completion engine for your source code.  This package
+;; takes the data from things like LSP or Dabbrev and puts those
+;; results in a convenient autocomplete.
+(use-package corfu
+  :ensure t
+  :hook (after-init . global-corfu-mode)
+  :bind (:map corfu-map ("<tab>" . corfu-complete))
+  :config
+  (setq tab-always-indent 'complete)
+  (setq corfu-preview-current nil)
+  (setq corfu-min-width 20)
+
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
+
+;; Imporve the behavior and look of dired.
+(use-package dired
+  :ensure nil
+  :commands (dired)
+  :hook
+  ((dired-mode . dired-hide-details-mode)
+   (dired-mode . hl-line-mode))
+  :config
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always)
+  (setq dired-dwim-target t))
+  (setq dired-auto-revert-buffer t)
+
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :bind
+  ( :map dired-mode-map
+    ("<tab>" . dired-subtree-toggle)
+    ("TAB" . dired-subtree-toggle)
+    ("<backtab>" . dired-subtree-remove)
+    ("S-TAB" . dired-subtree-remove))
+  :config
+  (setq dired-subtree-use-backgrounds nil))
+
+;; Emacs includes Tree-sitter support as of version 29, but does not
+;; bundle Tree-sitter grammars via the usual installation methods.
+;; That means that if you want to use a Tree-sitter major mode, you
+;; must first install the respective language grammar.  `treesit-auto'
+;; is a handy package that manages this extra step for you, prompting
+;; the installation of Tree-sitter grammars when necessary.
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
