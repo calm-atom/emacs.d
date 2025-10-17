@@ -4,6 +4,10 @@
 
 ;;; Setting tweaks:
 
+;; Disable splash screen and startup message.
+(setq inhibit-startup-message t) 
+(setq initial-scratch-message nil)
+
 ;; No auto-resizing of frames.
 (setq frame-inhibit-implied-resize t)
 
