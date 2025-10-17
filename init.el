@@ -205,3 +205,10 @@
   :ensure t
   :hook
   (dired-mode . nerd-icons-dired-mode))
+
+;; A beautiful set of themes by Protesilaos.  You might try calling
+;; `ef-themes-select' to find one that speaks to you.
+(use-package ef-themes
+  :ensure t
+  :config
+  (ef-themes-select 'ef-winter))
