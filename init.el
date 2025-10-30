@@ -266,3 +266,19 @@
   (setq search-whitespace-regexp ".*?")        ;; Allow searching across whitespace.
   :bind (("C-s" . isearch-forward-regexp)             ;; Bind C-s to forward isearch with regex support
          ("C-r" . isearch-backward-regexp)))          ;; Bind C-r to backward isearch with regex support
+
+;;; ELDOC
+;; Eldoc provides helpful inline documentation for functions and variables
+;; in the minibuffer, enhancing the development experience. It can be particularly useful
+;; in programming modes, as it helps you understand the context of functions as you type.
+;; This package is built-in, so there's no need to fetch it separately.
+;; The following line enables Eldoc globally for all buffers.
+(use-package eldoc
+  :ensure nil                                ;; This is built-in, no need to fetch it.
+  :config
+  (setq eldoc-idle-delay 0)                  ;; Automatically fetch doc help
+  (setq eldoc-echo-area-use-multiline-p nil) ;; We use the "K" floating help instead
+                                             ;; set to t if you want docs on the echo area
+  (setq eldoc-echo-area-display-truncation-message nil)
+  :init
+  (global-eldoc-mode))
