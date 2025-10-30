@@ -353,3 +353,9 @@
   :defer t        ;; Defer loading Which-Key until after init.
   :hook
   (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
+
+;;; THEME
+(use-package ef-themes
+  :ensure t
+  :config
+  (load-theme 'ef-duo-light :no-confirm-loading))
