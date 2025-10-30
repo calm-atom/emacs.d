@@ -1,9 +1,13 @@
 ;;; init.el --- Personal config -*- lexical-binding: t; -*-
-
+;;
 ;; Sources for building this:
 ;;
 ;; Emacs-kick: designed to be like neovim kickstart
 ;; https://github.com/LionyxML/emacs-kick/blob/master/init.el
+;;
+;; better-defaults: address the most obvious of deficiencies in uncontroversial ways that nearly everyone can agree upon
+;; https://github.com/emacsmirror/better-defaults/blob/master/better-defaults.el
+
 
 ;;; ========================================================
 ;;; PERFORMANCE HACKS
@@ -17,10 +21,10 @@
 ;; Set the maximum output size for reading process output, allowing for larger data transfers.
 (setq read-process-output-max (* 1024 1024 4))
 
+
 ;;; ========================================================
 ;;; PACKAGE MANAGER SETUP
 ;;; ========================================================
-;;
 ;; Emacs comes with a built-in package manager (`package.el'), and we'll use it
 ;; when it makes sense. However, `straight.el' is a bit more user-friendly and
 ;; reproducible, especially for newcomers and shareable configs like emacs-kick.
@@ -47,7 +51,6 @@
 (straight-use-package '(project :type built-in))
 (straight-use-package 'use-package)
 
-
 ;; In Emacs, a package is a collection of Elisp code that extends the editor's functionality,
 ;; much like plugins do in Neovim. We need to import this package to add package archives.
 (require 'package)
@@ -71,6 +74,9 @@
   :group 'appearance)
 
 
+;;; ========================================================
+;;; BUILT-IN PACKAGE SETUP
+;;; ========================================================
 ;; From now on, you'll see configurations using the `use-package` macro, which
 ;; allows us to organize our Emacs setup in a modular way. These configurations
 ;; look like this:
@@ -89,3 +95,88 @@
 ;; reproducibility, and customization. As we proceed, you'll see smaller
 ;; `use-package` declarations for specific packages, which will help us enable
 ;; the desired features and improve our workflow.
+
+;;; EMACS
+(use-package emacs
+  :ensure nil
+  :custom                                         ;; Set custom variables to configure Emacs behavior.
+  (auto-save-default nil)                         ;; Disable automatic saving of buffers.
+  (create-lockfiles nil)                          ;; Prevent the creation of lock files when editing.
+  (delete-selection-mode 1)                       ;; Enable replacing selected text with typed text.
+  (display-line-numbers-type 'relative)           ;; Use relative line numbering in programming modes.
+  (global-auto-revert-non-file-buffers t)         ;; Automatically refresh non-file buffers.
+  (history-length 300)                            ;; Set the length of the command history.
+  (indent-tabs-mode nil)                          ;; Disable the use of tabs for indentation (use spaces instead).
+  (inhibit-startup-message t)                     ;; Disable the startup message when Emacs launches.
+  (initial-scratch-message "")                    ;; Clear the initial message in the *scratch* buffer.
+  (ispell-dictionary "en_US")                     ;; Set the default dictionary for spell checking.
+  (make-backup-files nil)                         ;; Disable creation of backup files.
+  (ring-bell-function 'ignore)                    ;; Disable the audible bell.
+  (split-width-threshold 300)                     ;; Prevent automatic window splitting if the window width exceeds 300 pixels.
+  (switch-to-buffer-obey-display-actions t)       ;; Make buffer switching respect display actions.
+  (tab-always-indent 'complete)                   ;; Make the TAB key complete text instead of just indenting.
+  (tab-width 4)                                   ;; Set the tab width to 4 spaces.
+  (treesit-font-lock-level 4)                     ;; Use advanced font locking for Treesit mode.
+  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
+  (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
+  (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
+  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
+  (save-interprogram-paste-before-kill t)         ;; Ensure kill operations don't overwrite existing clipboard text
+  (apropos-do-all t)                              ;; Have apropos do a more extensive search
+  (require-final-newline t)                       ;; Add newline automatically at the end of the file.
+  (visible-bell t)                                ;; Flash frame to represent the bell
+  (load-prefer-newer t)                           ;; Load the newest file
+  (frame-inhibit-implied-resize t)                ;; Don't auto resize frames
+  (read-file-name-completion-ignore-case t)       ;; Ignore case for file name completion
+  (read-buffer-completion-ignore-case t)          ;; Ignore case for buffer completion
+  (completion-ignore-case t)                      ;; Ignore case for completion
+  (mouse-yank-at-point t)                         ;; Make certain mouse commands more intuitive
+
+  :hook                                           ;; Add hooks to enable specific features in certain modes.
+  (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
+
+  :config
+  ;; Save manual customizations to a separate file instead of cluttering `init.el'.
+  ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
+  ;; The saves you do manually using the Emacs interface would overwrite this file.
+  ;; The following makes sure those customizations are in a separate file.
+  (setq custom-file (locate-user-emacs-file "custom.el"))      ;; Specify the custom file path.
+  (load custom-file 'noerror 'nomessage)                       ;; Load the custom file quietly, ignoring errors.
+
+  ;; Makes Emacs vertical divisor the symbol │ instead of |.
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+
+  :init                        ;; Initialization settings that apply before the package is loaded.
+  (tool-bar-mode -1)           ;; Disable the tool bar for a cleaner interface.
+  (menu-bar-mode -1)           ;; Disable the menu bar for a more streamlined look.
+
+  (when scroll-bar-mode
+    (scroll-bar-mode -1))      ;; Disable the scroll bar if it is active.
+
+  (global-hl-line-mode -1)     ;; Disable highlight of the current line
+  (global-auto-revert-mode 1)  ;; Enable global auto-revert mode to keep buffers up to date with their corresponding files.
+  (recentf-mode 1)             ;; Enable tracking of recently opened files.
+  (savehist-mode 1)            ;; Enable saving of command history.
+  (save-place-mode 1)          ;; Enable saving the place in files for easier return.
+  (winner-mode 1)              ;; Enable winner mode to easily undo window configuration changes.
+  (xterm-mouse-mode 1)         ;; Enable mouse support in terminal mode.
+  (show-paren-mode 1)          ;; Vizualize matching parens
+
+  ;; Set the default coding system for files to UTF-8.
+  (modify-coding-system-alist 'file "" 'utf-8)
+
+  ;; Add a hook to run code after Emacs has fully initialized.
+  (add-hook 'after-init-hook
+            (lambda ()
+              (message "Emacs has fully loaded.")
+
+              ;; Insert a welcome message in the *scratch* buffer displaying loading time and activated packages.
+              (with-current-buffer (get-buffer-create "*scratch*")
+                (insert (format
+                         ";;    Welcome to Emacs!
+;;
+;;    Loading time : %s
+;;    Packages     : %s
+"
+                         (emacs-init-time)
+                         (length (hash-table-keys straight--recipe-cache))))))))
