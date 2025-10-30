@@ -304,8 +304,43 @@
 ;; productivity. The configuration below simply defers loading Org-mode until
 ;; it's explicitly needed, which can help speed up Emacs startup time.
 (use-package org
-  :ensure nil     ;; This is built-in, no need to fetch it.
-  :defer t)       ;; Defer loading Org-mode until it's needed.
+  :ensure nil                ;; This is built-in, no need to fetch it.
+  :defer t                   ;; Defer loading Org-mode until it's needed.
+  :hook (org-indent-mode)    ;; Make the indentation look nicer
+  :bind
+  ("C-c l" . org-store-link) ;; Store a link to the current location
+  ("C-c a" . org-agenda)     ;; Open the Org Agenda dispatcher
+  ("C-c c" . org-capture)    ;; Start a new Org capture entry
+  :config
+  (setq org-log-done 'time)            ;; When a TODO is set to a done state, record a timestamp
+  (setq org-return-follows-link  t)    ;; Follow the links
+  (setq org-agenda-files '("~/org"))   ;; Tell org mode where to look for files
+  
+  ;; Custom TODO States
+  ;; Active states: TODO, PLANNING, IN-PROGRESS, VERIFYING, BLOCKED
+  ;; Inactive/Done states: DONE, OBE, WONT-DO
+  (setq org-todo-keywords    
+    '((sequence 
+       "TODO(t)" 
+       "PLANNING(p)" 
+       "IN-PROGRESS(i@/!)" 
+       "VERIFYING(v!)" 
+       "BLOCKED(b@)"  
+       "|" 
+       "DONE(d!)" 
+       "OBE(o@!)" 
+       "WONT-DO(w@/!)")))
+
+  ;; Template "g" will file entries with a fixed Priority B to your todos.org file.
+  (setq org-capture-templates
+    '(
+      ("g" "General To-Do"
+       entry 
+       (file+headline "~/org/todos.org" "General Tasks") 
+       ;; Template uses a fixed priority [#B] and a time-only stamp (%T)
+       "* TODO [#B] %?\n:Created: %T\n " 
+       :empty-lines 0)
+      )))
 
 ;;; WHICH-KEY
 ;; `which-key' is an Emacs package that displays available keybindings in a
