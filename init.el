@@ -250,3 +250,19 @@
     (let ((gls (executable-find "gls")))                     ;; Use GNU ls on macOS if available.
       (when gls
         (setq insert-directory-program gls)))))
+
+;;; ISEARCH
+;; In this configuration, we're setting up isearch, Emacs's incremental search feature.
+;; The standard Emacs shortcuts:
+;; - `C-s' to initiate a forward search
+;; - `C-r' to initiate a backward search
+;; The following settings enhance the isearch experience:
+(use-package isearch
+  :ensure nil                                  ;; This is built-in, no need to fetch it.
+  :config
+  (setq isearch-lazy-count t)                  ;; Enable lazy counting to show current match information.
+  (setq lazy-count-prefix-format "(%s/%s) ")   ;; Format for displaying current match count.
+  (setq lazy-count-suffix-format nil)          ;; Disable suffix formatting for match count.
+  (setq search-whitespace-regexp ".*?")        ;; Allow searching across whitespace.
+  :bind (("C-s" . isearch-forward-regexp)             ;; Bind C-s to forward isearch with regex support
+         ("C-r" . isearch-backward-regexp)))          ;; Bind C-r to backward isearch with regex support
