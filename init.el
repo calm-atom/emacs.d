@@ -677,3 +677,19 @@
   :defer t
   :hook
   (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
+
+
+;;; INDENT-GUIDE
+;; The `indent-guide' package provides visual indicators for indentation levels
+;; in programming modes, making it easier to see code structure at a glance.
+;; It draws vertical lines (by default, a character of your choice) at each
+;; level of indentation, helping to improve readability and navigation within
+;; the code.
+(use-package indent-guide
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
+  :config
+  (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
