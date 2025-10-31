@@ -701,6 +701,13 @@
   :ensure t
   :config)
 
+;;; OSC 52 CLIPBOARD
+;; Enables clipboard integration over SSH using OSC 52 escape sequences
+(use-package clipetty
+  :ensure t
+  :straight t
+  :hook (after-init . global-clipetty-mode))
+
 ;;; NERD ICONS
 ;; The `nerd-icons' package provides a set of icons for use in Emacs. These icons can
 ;; enhance the visual appearance of various modes and packages, making it easier to
