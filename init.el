@@ -354,13 +354,6 @@
   :hook
   (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
 
-;;; THEME
-(use-package ef-themes
-  :ensure t
-  :config
-  (load-theme 'ef-duo-light :no-confirm-loading))
-
-
 ;;; ========================================================
 ;;; EXTERNAL PACKAGES
 ;;; ========================================================
@@ -712,3 +705,47 @@
   :straight t
   :ensure t
   :config)
+
+;;; NERD ICONS
+;; The `nerd-icons' package provides a set of icons for use in Emacs. These icons can
+;; enhance the visual appearance of various modes and packages, making it easier to
+;; distinguish between different file types and functionalities.
+(use-package nerd-icons
+  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :defer t)                               ;; Load the package only when needed to improve startup time.
+
+
+;;; NERD ICONS Dired
+;; The `nerd-icons-dired' package integrates nerd icons into the Dired mode,
+;; providing visual icons for files and directories. This enhances the Dired
+;; interface by making it easier to identify file types at a glance.
+(use-package nerd-icons-dired
+  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :defer t                                ;; Load the package only when needed to improve startup time.
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+
+;;; NERD ICONS COMPLETION
+;; The `nerd-icons-completion' package enhances the completion interfaces in
+;; Emacs by integrating nerd icons with completion frameworks such as
+;; `marginalia'. This provides visual cues for the completion candidates,
+;; making it easier to distinguish between different types of items.
+(use-package nerd-icons-completion
+  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :after (:all nerd-icons marginalia)     ;; Load after `nerd-icons' and `marginalia' to ensure proper integration.
+  :config
+  (nerd-icons-completion-mode)            ;; Activate nerd icons for completion interfaces.
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)) ;; Setup icons in the marginalia mode for enhanced completion display.
+
+;;; THEME
+(use-package ef-themes
+  :ensure t
+  :config
+  (load-theme 'ef-duo-light :no-confirm-loading))
