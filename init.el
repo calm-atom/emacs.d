@@ -446,3 +446,26 @@
   ;; Use Consult for xref locations with a preview feature.
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref))
+
+
+;;; EMBARK
+;; Embark provides a powerful contextual action menu for Emacs, allowing
+;; you to perform various operations on completion candidates and other items.
+;; It extends the capabilities of completion frameworks by offering direct
+;; actions on the candidates.
+;; Just `<leader> .' over any text, explore it :)
+(use-package embark
+  :ensure t
+  :straight t
+  :defer t)
+
+
+;;; EMBARK-CONSULT
+;; Embark-Consult provides a bridge between Embark and Consult, ensuring
+;; that Consult commands, like previews, are available when using Embark.
+(use-package embark-consult
+  :ensure t
+  :straight t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode)) ;; Enable preview in Embark collect mode.
+
