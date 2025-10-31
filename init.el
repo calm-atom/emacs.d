@@ -549,6 +549,7 @@
          ((go-ts-mode                                   ;; Enable LSP for Go
            python-mode                                  ;; Enable LSP for Python
            python-ts-mode                               ;; Enable LSP for Python Treesitter
+           terraform-mode                               ;; Enable LSP for Terraform
            web-mode) . lsp-deferred))                   ;; Enable LSP for Web (HTML)
   :commands lsp
   :custom
@@ -606,12 +607,20 @@
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp-deferred))))  ; or lsp
+;;; TERRAFORM-MODE
+;; Provides major mode support for Terraform configuration files
+(use-package terraform-mode
+  :ensure t
+  :straight t
+  :defer t
+  :hook (terraform-mode . lsp-deferred))
 
 ;;; Autoformatting
 (use-package apheleia
   :straight t
   :hook ((python-mode . apheleia-mode)
-         (python-ts-mode . apheleia-mode))
+         (python-ts-mode . apheleia-mode)
+         (terraform-mode . apheleia-mode))
   :config
   (setf (alist-get 'ruff apheleia-formatters)
         '("ruff" "format" "--stdin-filename" filepath "-"))
