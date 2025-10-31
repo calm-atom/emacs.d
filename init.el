@@ -359,3 +359,47 @@
   :ensure t
   :config
   (load-theme 'ef-duo-light :no-confirm-loading))
+
+
+;;; ========================================================
+;;; EXTERNAL PACKAGES
+;;; ========================================================
+;; From this point onward, all configurations will be for third-party packages
+;; that enhance Emacs' functionality and extend its capabilities.
+
+;;; VERTICO
+;; Vertico enhances the completion experience in Emacs by providing a
+;; vertical selection interface for both buffer and minibuffer completions.
+;; Unlike traditional minibuffer completion, which displays candidates
+;; in a horizontal format, Vertico presents candidates in a vertical list,
+;; making it easier to browse and select from multiple options.
+;;
+;; In buffer completion, `switch-to-buffer' allows you to select from open buffers.
+;; Vertico streamlines this process by displaying the buffer list in a way that
+;; improves visibility and accessibility. This is particularly useful when you
+;; have many buffers open, allowing you to quickly find the one you need.
+;;
+;; In minibuffer completion, such as when entering commands or file paths,
+;; Vertico helps by showing a dynamic list of potential completions, making
+;; it easier to choose the correct one without typing out the entire string.
+(use-package vertico
+  :ensure t
+  :straight t
+  :hook
+  (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
+  :custom
+  (vertico-count 10)                    ;; Number of candidates to display in the completion list.
+  (vertico-resize nil)                  ;; Disable resizing of the vertico minibuffer.
+  (vertico-cycle t)                     ;; Cycle through candidates when reaching the end of the list.
+  :config
+  ;; Customize the display of the current candidate in the completion list.
+  ;; This will prefix the current candidate with “» ” to make it stand out.
+  ;; Reference: https://github.com/minad/vertico/wiki#prefix-current-candidate-with-arrow
+  (advice-add #'vertico--format-candidate :around
+              (lambda (orig cand prefix suffix index _start)
+                (setq cand (funcall orig cand prefix suffix index _start))
+                (concat
+                 (if (= vertico--index index)
+                     (propertize "» " 'face '(:foreground "#80adf0" :weight bold))
+                   "  ")
+                 cand))))
