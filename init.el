@@ -496,3 +496,39 @@
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
   :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
+
+;;; CORFU
+;; Corfu Mode provides a text completion framework for Emacs.
+;; It enhances the editing experience by offering context-aware
+;; suggestions as you type.
+;; Corfu Mode is highly customizable and can be integrated with
+;; various modes and languages.
+(use-package corfu
+  :ensure t
+  :straight t
+  :defer t
+  :custom
+  (corfu-auto nil)                        ;; Only completes when hitting TAB
+  ;; (corfu-auto-delay 0)                ;; Delay before popup (enable if corfu-auto is t)
+  (corfu-auto-prefix 1)                  ;; Trigger completion after typing 1 character
+  (corfu-quit-no-match t)                ;; Quit popup if no match
+  (corfu-scroll-margin 5)                ;; Margin when scrolling completions
+  (corfu-max-width 50)                   ;; Maximum width of completion popup
+  (corfu-min-width 50)                   ;; Minimum width of completion popup
+  (corfu-popupinfo-delay 0.5)            ;; Delay before showing documentation popup
+  :config
+  (if ek-use-nerd-fonts
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode t))
+
+
+;;; NERD-ICONS-CORFU
+;; Provides Nerd Icons to be used with CORFU.
+(use-package nerd-icons-corfu
+  :if ek-use-nerd-fonts
+  :ensure t
+  :straight t
+  :defer t
+  :after (:all corfu))
