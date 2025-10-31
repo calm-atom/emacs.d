@@ -403,3 +403,18 @@
                      (propertize "» " 'face '(:foreground "#80adf0" :weight bold))
                    "  ")
                  cand))))
+
+;;; ORDERLESS
+;; Orderless enhances completion in Emacs by allowing flexible pattern matching.
+;; It works seamlessly with Vertico, enabling you to use partial strings and
+;; regular expressions to find files, buffers, and commands more efficiently.
+;; This combination provides a powerful and customizable completion experience.
+(use-package orderless
+  :ensure t
+  :straight t
+  :defer t                                    ;; Load Orderless on demand.
+  :after vertico                              ;; Ensure Vertico is loaded before Orderless.
+  :init
+  (setq completion-styles '(orderless basic)  ;; Set the completion styles.
+        completion-category-defaults nil      ;; Clear default category settings.
+        completion-category-overrides '((file (styles partial-completion))))) ;; Customize file completion styles.
