@@ -418,3 +418,14 @@
   (setq completion-styles '(orderless basic)  ;; Set the completion styles.
         completion-category-defaults nil      ;; Clear default category settings.
         completion-category-overrides '((file (styles partial-completion))))) ;; Customize file completion styles.
+
+;;; MARGINALIA
+;; Marginalia enhances the completion experience in Emacs by adding
+;; additional context to the completion candidates. This includes
+;; helpful annotations such as documentation and other relevant
+;; information, making it easier to choose the right option.
+(use-package marginalia
+  :ensure t
+  :straight t
+  :hook
+  (after-init . marginalia-mode))
