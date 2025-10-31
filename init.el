@@ -600,14 +600,21 @@
   ;; Semantic settings
   (lsp-semantic-tokens-enable nil))                     ;; Disable semantic tokens.
 
+;;; LSP Additional Servers
+;; You can extend `lsp-mode' by integrating additional language servers for specific
+;; technologies. For example, `lsp-tailwindcss' provides support for Tailwind CSS
+;; classes within your HTML files. By using various LSP packages, you can connect
+;; multiple LSP servers simultaneously, enhancing your coding experience across
+;; different languages and frameworks.
 (use-package lsp-pyright
   :ensure t
   :straight t
   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+                          (lsp-deferred))))  ; or lsp
 
+;;; Autoformatting
 (use-package apheleia
   :straight t
   :hook ((python-mode . apheleia-mode)
@@ -624,3 +631,13 @@
         '(ruff-isort ruff))
 
   (setq apheleia-log-only-errors t))
+
+;;; ELDOC-BOX
+;; eldoc-box enhances the default Eldoc experience by displaying documentation in a popup box,
+;; usually in a child frame. This makes it easier to read longer docstrings without relying on
+;; the minibuffer. It integrates seamlessly with Eldoc and activates when Eldoc is active.
+;; Useful for graphical Emacs; terminal users may want to fall back to `eldoc-box-display-at-point-mode'.
+(use-package eldoc-box
+  :ensure t
+  :straight t
+  :defer t)
