@@ -704,3 +704,11 @@
   :ensure t
   :hook
   (prog-mode . rainbow-delimiters-mode))
+
+;;; DOTENV
+;; A simple major mode to provide .env files with color highlighting
+(use-package dotenv-mode
+  :defer t
+  :straight t
+  :ensure t
+  :config)
