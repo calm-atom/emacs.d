@@ -501,7 +501,7 @@
   :straight t
   :defer t
   :custom
-  (corfu-auto nil)                        ;; Only completes when hitting TAB
+  (corfu-auto t)                         ;; Automatically popup completions
   ;; (corfu-auto-delay 0)                ;; Delay before popup (enable if corfu-auto is t)
   (corfu-auto-prefix 1)                  ;; Trigger completion after typing 1 character
   (corfu-quit-no-match t)                ;; Quit popup if no match
