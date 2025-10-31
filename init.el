@@ -693,3 +693,14 @@
   (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
   :config
   (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
+
+;;; RAINBOW DELIMITERS
+;; The `rainbow-delimiters' package provides colorful parentheses, brackets, and braces
+;; to enhance readability in programming modes. Each level of nested delimiter is assigned
+;; a different color, making it easier to match pairs visually.
+(use-package rainbow-delimiters
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
