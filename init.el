@@ -117,7 +117,7 @@
   (tab-always-indent 'complete)                   ;; Make the TAB key complete text instead of just indenting.
   (tab-width 4)                                   ;; Set the tab width to 4 spaces.
   (treesit-font-lock-level 4)                     ;; Use advanced font locking for Treesit mode.
-  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
+  (truncate-lines t)                              ;; Wrap long lines.
   (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
   (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
   (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
@@ -707,6 +707,23 @@
   :ensure t
   :straight t
   :hook (after-init . global-clipetty-mode))
+
+;;; AVY
+;; Avy provides a fast way to jump to any visible text using character-based
+;; decision tree. It's similar to vim-easymotion or hop.nvim in Neovim.
+;; You can jump to any character, word, or line with just a few keystrokes.
+(use-package avy
+  :ensure t
+  :straight t
+  :defer t
+  :bind (("C-c j c" . avy-goto-char)       ;; More mnemonic: "jump char"
+       ("C-c j w" . avy-goto-word-1)     ;; "jump word"
+       ("C-c j l" . avy-goto-line)       ;; "jump line"
+       ("C-c j j" . avy-goto-char-2))    ;; "jump jump"
+  :config
+  (setq avy-background t)              ;; Dim background while jumping
+  (setq avy-style 'at-full)            ;; Show hints at the target location
+  (setq avy-case-fold-search t))       ;; Ignore case when searching
 
 ;;; NERD ICONS
 ;; The `nerd-icons' package provides a set of icons for use in Emacs. These icons can
