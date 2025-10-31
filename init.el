@@ -658,20 +658,6 @@
 	  (setopt magit-format-file-function #'magit-format-file-nerd-icons)) ;; Turns on magit nerd-icons
   :defer t)
 
-;;; XCLIP
-;; `xclip' is an Emacs package that integrates the X Window System clipboard
-;; with Emacs. It allows seamless copying and pasting between Emacs and other
-;; applications using the clipboard. When `xclip' is enabled, any text copied
-;; in Emacs can be pasted in other applications, and vice versa, providing a
-;; smooth workflow when working across multiple environments.
-(use-package xclip
-  :ensure t
-  :straight t
-  :defer t
-  :hook
-  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
-
-
 ;;; INDENT-GUIDE
 ;; The `indent-guide' package provides visual indicators for indentation levels
 ;; in programming modes, making it easier to see code structure at a glance.
